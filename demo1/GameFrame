@@ -1,0 +1,209 @@
+import java.awt.*;
+import java.awt.event.ActionListener;
+
+import javax.swing.*;
+
+import javafx.event.ActionEvent;
+public class GameFrame extends JFrame{
+	JButton []jb;
+	public GameFrame() 
+	{   Game game=new Game();
+		setSize(600,600);
+		JPanel jp= new JPanel();
+		jp.setSize(600,600);
+		add(jp);
+		GridLayout layout=new GridLayout(15,15);
+		jp.setLayout(layout);
+		JButton []jb=new JButton[225];
+		 class buttonActionListener implements ActionListener
+		    {
+			 private int x;
+		     private int y;
+		     private JButton b;
+			    public buttonActionListener(JButton b,int x, int y) 
+			    {
+			    	this.x=x;
+			    	this.y=y;
+			    	this.b=b;
+			    }
+		        
+
+				@Override
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+					// TODO Auto-generated method stub
+					
+		        	if(game.playChess(x,y))
+		        	{ 
+		        		if(game.getPlayer()==1)
+		        			b.setBackground(Color.BLACK);
+		        		else
+		        			b.setBackground(Color.WHITE);
+		        	  if(game.checkWin(x, y)&&game.getPlayer()==1)
+		        	  {
+		        		  System.out.println("Black win");
+		        		  JDialog jd=new JDialog();
+		        		  JLabel jl=new JLabel("Black win!");
+		        		  jd.add(jl);
+		        	  }
+		        	  
+		        	  if(game.checkWin(x, y)&&game.getPlayer()==2)
+		        	  {
+		        		  System.out.println("White win"); 
+		        		  JDialog jd=new JDialog();
+		        		  JLabel jl=new JLabel("White win!");
+		        		  jd.add(jl);
+
+		        	  }
+		        	  
+                      game.addStepCount();
+                      
+		        	}
+		        	
+		        	
+				}
+
+		    }
+		for(int i=0;i<225;i++)
+		{
+			jb[i]=new JButton();
+            jb[i].setBackground(Color.YELLOW);
+			
+			jb[i].addActionListener(new buttonActionListener(jb[i],i%15,i/15));
+			
+		    jp.add(jb[i]);
+		    
+		}
+		
+		
+	}
+
+public static void main(String[] args)
+{
+	GameFrame game=new GameFrame();
+	game.setVisible(true);
+		 
+}
+}
+
+
+
+class Game
+{       private int[][] chessBoard;
+        private int stepCount=0;
+        public Game()
+        {
+        	chessBoard=new int[15][15];
+        }
+        public void addStepCount()
+        {
+        stepCount++;
+        }
+        
+        public int getPlayer()
+        {
+         return stepCount%2+1;
+        }
+        
+		
+		public boolean playChess(int x,int y) 
+		{
+		  if(chessBoard[x][y]==0)
+		  {
+			  chessBoard[x][y]=stepCount%2+1;
+			  return true;
+		  }
+			  return false;
+		}
+		
+		public boolean checkWin(int x,int y)
+		{   	
+			if(checkDiagonal(x,y) || checkRow(x,y) || checkCol(x,y)) 
+				return true;
+			return false;
+
+		}
+
+	
+	public boolean checkRow(int x, int y) {
+		int counter = 0;
+		for (int i = x + 1; i < 15; i++)
+		{
+			if (chessBoard[i][y] ==chessBoard[x][y])
+				counter++;
+				else break;
+		}
+		
+		for (int i = x; i >= 0; i--) {
+			if (chessBoard[i][y] ==chessBoard[x][y])
+				counter++;
+            else break;
+		}
+        if(counter>=5)
+		return true;
+        return false;
+		
+	}
+	
+	public boolean checkCol(int x, int y) 
+	{
+		int counter = 0;//
+		for (int j = y + 1; j < 15; j++)
+		{
+			if (chessBoard[x][j] ==chessBoard[x][y])
+				counter++;
+				else break;
+		}
+		
+		for (int j = x; j >= 0; j--) {
+			if (chessBoard[x][j] ==chessBoard[x][y])
+				counter++;
+            else break;
+		}
+        if(counter>=5)
+		return true;
+        return false;
+		
+	}
+	public boolean checkDiagonal(int x, int y)
+	{
+			int counter = 0;
+			for (int i = x + 1,j =y+1; i < 15 && j < 15;i++,j++)
+			{
+				if (chessBoard[i][j] ==chessBoard[x][y])
+					counter++;
+					else break;
+			}
+			
+			for (int i = x,j =y; i >=0 && j >=0;i--,j--) {
+				if (chessBoard[i][j] ==chessBoard[x][y])
+					counter++;
+	            else break;
+			}
+	        if(counter>=5)
+			return true;
+	        
+	        
+	        counter = 0;
+			for (int i = x + 1,j =y-1; i < 15 && j>0;i++,j--)
+			{
+				if (chessBoard[i][j] ==chessBoard[x][y])
+					counter++;
+					else break;
+			}
+			
+			for (int i = x,j =y; i >=0 && j <15;i--,j++) 
+			{
+				if (chessBoard[i][j] ==chessBoard[x][y])
+					counter++;
+	            else break;
+			}
+	        
+			 if(counter>=5)
+			return true;
+	        return false;	
+	}
+	
+	}
+
+    
+ 
