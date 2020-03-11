@@ -1,9 +1,9 @@
 
-public class AI{
+public class AIplayer{
 	private int go;  
 	private int [][]chessBoard;
 	
-	public AI(int g,int [][]currentPosition)
+	public AIplayer(int g,int [][]currentPosition)
 	{   this.chessBoard=currentPosition;
 		this.go=g;
 	}
