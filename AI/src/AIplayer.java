@@ -32,6 +32,11 @@ public class AIplayer{
 	}
 	
 	
+	
+	
+	
+	
+	
 	public int[] playChess()
 	{   int x=0,y=0;
 		int evaluateMark=0;
